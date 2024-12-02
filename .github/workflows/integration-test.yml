@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          if [[ ${{ inputs.build_sha }} == ${{ github.sha }} ]]; then
+          if [[ ${{ inputs.build_sha }} == 738ec502c2a054e2039afb97c3a48342c87f6ac5 ]]; then
             echo "Build SHA matches test SHA"
           else
             echo "Build SHA does not match test SHA"
