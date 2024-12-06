@@ -232,6 +232,8 @@ func (p *pusher) send() {
 		input.Entity = p.logSrc.Entity()
 	}
 
+	p.Log.Infof("TESTING: %v", input)
+
 	startTime := time.Now()
 
 	retryCountShort := 0
