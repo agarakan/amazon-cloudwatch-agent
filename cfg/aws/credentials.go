@@ -20,6 +20,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/sts"
 
+	"github.com/aws/amazon-cloudwatch-agent/cfg/envconfig"
 	"github.com/aws/amazon-cloudwatch-agent/extension/agenthealth/handler/stats/agent"
 )
 
@@ -205,8 +206,8 @@ func newStsCredentials(c client.ConfigProvider, roleARN string, region string) *
 }
 
 var (
-	sourceAccount = os.Getenv("AMZ_SOURCE_ACCOUNT") // populates the "x-amz-source-account" header
-	sourceArn     = os.Getenv("AMZ_SOURCE_ARN")     // populates the "x-amz-source-arn" header
+	sourceAccount = os.Getenv(envconfig.AMZ_SOURCE_ACCOUNT) // populates the "x-amz-source-account" header
+	sourceArn     = os.Getenv(envconfig.AMZ_SOURCE_ARN)     // populates the "x-amz-source-arn" header
 )
 
 // newStsClient creates a new STS client with the provided config and options.
