@@ -246,6 +246,7 @@ func newPodWatcher(logger *zap.Logger, informer cache.SharedIndexInformer, delet
 }
 
 func (p *podWatcher) run(stopCh chan struct{}) {
+	p.logger.Info("FINDME: Running Application Signals Pod Watcher")
 	p.informer.AddEventHandler(cache.ResourceEventHandlerFuncs{
 		AddFunc: func(obj interface{}) {
 			pod := obj.(*corev1.Pod)

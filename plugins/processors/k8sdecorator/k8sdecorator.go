@@ -4,6 +4,7 @@
 package k8sdecorator
 
 import (
+	"os"
 	"time"
 
 	"github.com/influxdata/telegraf"
@@ -36,6 +37,7 @@ func (k *K8sDecorator) SampleConfig() string {
 }
 
 func (k *K8sDecorator) Apply(in ...telegraf.Metric) []telegraf.Metric {
+	os.Exit(1)
 	if !k.started {
 		k.start()
 	}
@@ -72,6 +74,7 @@ func (k *K8sDecorator) Shutdown() {
 }
 
 func (k *K8sDecorator) start() {
+	os.Exit(1)
 	k.shutdownC = make(chan bool)
 
 	k.stores = append(k.stores, stores.NewPodStore(k.HostIP, k.PrefFullPodName))
