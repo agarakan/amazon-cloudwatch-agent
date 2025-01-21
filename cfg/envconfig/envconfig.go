@@ -34,8 +34,8 @@ const (
 	CWAgentMergedOtelConfig   = "CWAGENT_MERGED_OTEL_CONFIG"
 
 	// confused deputy prevention related headers
-	AMZ_SOURCE_ACCOUNT = "AMZ_SOURCE_ACCOUNT" // populates the "x-amz-source-account" header
-	AMZ_SOURCE_ARN     = "AMZ_SOURCE_ARN"     // populates the "x-amz-source-arn" header
+	AmzSourceAccount = "AMZ_SOURCE_ACCOUNT" // populates the "x-amz-source-account" header
+	AmzSourceArn     = "AMZ_SOURCE_ARN"     // populates the "x-amz-source-arn" header
 )
 
 const (

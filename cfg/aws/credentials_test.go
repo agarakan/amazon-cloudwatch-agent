@@ -7,29 +7,14 @@ import (
 	"testing"
 
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/client"
 	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/awstesting/mock"
 	"github.com/aws/aws-sdk-go/service/sts"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-type mockConfigProvider struct{}
-
-func (m mockConfigProvider) ClientConfig(serviceName string, cfgs ...*aws.Config) client.Config {
-	return client.Config{
-		Config: &aws.Config{
-			// These are examples credentials pulled from:
-			// https://docs.aws.amazon.com/STS/latest/APIReference/API_GetAccessKeyInfo.html
-			Credentials: credentials.NewStaticCredentials("AKIAIOSFODNN7EXAMPLE", "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY", ""),
-			Region:      aws.String("us-east-1"),
-		},
-	}
-}
-
 func TestConfusedDeputyHeaders(t *testing.T) {
-	mockProvider := mockConfigProvider{}
-
 	tests := []struct {
 		name                  string
 		envSourceArn          string
@@ -72,16 +57,19 @@ func TestConfusedDeputyHeaders(t *testing.T) {
 			sourceArn = tt.envSourceArn
 			sourceAccount = tt.envSourceAccount
 
-			client := newStsClient(mockProvider)
+			client := newStsClient(mock.Session, &aws.Config{
+				// These are examples credentials pulled from:
+				// https://docs.aws.amazon.com/STS/latest/APIReference/API_GetAccessKeyInfo.html
+				Credentials: credentials.NewStaticCredentials("AKIAIOSFODNN7EXAMPLE", "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY", ""),
+				Region:      aws.String("us-east-1"),
+			})
 
-			// Generate the assume role request, but do not actually send it
-			// We don't need this unit test making real AWS calls
 			request, _ := client.AssumeRoleRequest(&sts.AssumeRoleInput{
 				// We aren't going to actually make the assume role call, we are just going
 				// to verify the headers are present once signed so the RoleArn and RoleSessionName
 				// arguments are irrelevant. Fill them out with something so the request is valid.
-				RoleArn:         aws.String("XXXXXXX"),
-				RoleSessionName: aws.String("XXXXXXX"),
+				RoleArn:         aws.String("arn:aws:iam::012345678912:role/XXXXXXXX"),
+				RoleSessionName: aws.String("MockSession"),
 			})
 
 			// Headers are generated after the request is signed (but before it's sent)
