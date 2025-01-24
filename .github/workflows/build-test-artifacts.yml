@@ -58,7 +58,7 @@ jobs:
       PackageBucketKey: "integration-test/packaging/${{ github.sha }}"
 
   StartIntegrationTests:
-    needs: [ BuildAndUploadITAR, BuildAndUploadCN, BuildDocker ]
+    needs: [ BuildDocker ]
     if: ${{ inputs.test-image-before-upload }}
     runs-on: ubuntu-latest
     steps:
