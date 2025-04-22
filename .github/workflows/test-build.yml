@@ -104,20 +104,20 @@ jobs:
             ~/.cache/go-build
           key: v1-go-pkg-mod-${{ runner.os }}-${{ hashFiles('**/go.sum') }}
 
-      - name: Import GPG Key
-        if: contains(inputs.BucketKey, 'test') == false || steps.cached_binaries.outputs.cache-hit == false
-        uses: crazy-max/ghaction-import-gpg@v5
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
+      # - name: Import GPG Key
+      #   if: contains(inputs.BucketKey, 'test') == false || steps.cached_binaries.outputs.cache-hit == false
+      #   uses: crazy-max/ghaction-import-gpg@v5
+      #   with:
+      #     gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+      #     passphrase: ${{ secrets.PASSPHRASE }}
 
       - name: Build Binaries
         if: contains(inputs.BucketKey, 'test') == false || steps.cached_binaries.outputs.cache-hit == false
         run: make amazon-cloudwatch-agent-linux amazon-cloudwatch-agent-windows package-rpm package-deb package-win
 
-      - name: Sign Build Files
-        if: contains(inputs.BucketKey, 'test') == false || steps.cached_binaries.outputs.cache-hit == false
-        run: for f in $(find build/bin/); do if [ ! -d $f ]; then echo "Signing file $f" && gpg --detach-sign $f ; fi ; done
+      # - name: Sign Build Files
+      #   if: contains(inputs.BucketKey, 'test') == false || steps.cached_binaries.outputs.cache-hit == false
+      #   run: for f in $(find build/bin/); do if [ ! -d $f ]; then echo "Signing file $f" && gpg --detach-sign $f ; fi ; done
 
 
       - name: Upload to s3
